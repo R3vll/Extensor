@@ -1,4 +1,4 @@
-# Extensor — Extension & Shortcut Manager (Chrome MV3)
+# Extensor — Extension & Shortcut Manager 
 
 One popup to manage **all extensions** and **keyboard shortcuts** inside the browser.
 
