@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Extensor — Extension & Shortcut Manager</title>
+<link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo">◧</span><div><h1>Extensor</h1><p>Extension + Shortcut Manager</p></div></div>
+  <div class="top-actions">
+    <button id="btnFull" class="ghost" title="Open as full tab">⤢</button>
+    <button id="btnShortcutsPage" class="ghost" title="Open Chrome's native shortcut editor">⌨</button>
+  </div>
+</header>
+
+<div id="stats" class="stats">
+  <span><b id="statTotal">–</b> total</span>
+  <span><b id="statOn" class="on">–</b> on</span>
+  <span><b id="statOff" class="off">–</b> off</span>
+  <span class="spacer"></span>
+  <button id="bulkOff" class="mini" title="Disable all except this manager">All off</button>
+  <button id="bulkOn" class="mini" title="Enable all">All on</button>
+</div>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-tab="extensions" role="tab">Extensions</button>
+  <button class="tab" data-tab="shortcuts" role="tab">Shortcuts</button>
+  <button class="tab" data-tab="custom" role="tab">Custom keys</button>
+</nav>
+
+<div class="toolbar">
+  <input id="search" type="search" placeholder="Search extensions…" autocomplete="off" />
+  <select id="filter" title="Filter">
+    <option value="all">All</option>
+    <option value="enabled">Enabled</option>
+    <option value="disabled">Disabled</option>
+    <option value="app">Apps / launchable</option>
+    <option value="theme">Themes</option>
+  </select>
+  <select id="sort" title="Sort">
+    <option value="name">Name A–Z</option>
+    <option value="enabled-first">Enabled first</option>
+    <option value="disabled-first">Disabled first</option>
+  </select>
+</div>
+
+<!-- TAB: extensions -->
+<section id="tab-extensions" class="panel">
+  <div id="list" class="list"></div>
+  <p id="empty" class="empty" hidden>No extensions match.</p>
+</section>
+
+<!-- TAB: native shortcuts -->
+<section id="tab-shortcuts" class="panel" hidden>
+  <div class="note">
+    <b>Why two places?</b> Chrome does not let any extension read other
+    extensions' shortcuts (privacy). So Extensor shows <b>its own</b> bindings below,
+    and deep-links you to Chrome's native editor for everything else.
+    <div class="row">
+      <button id="btnOpenShortcuts" class="primary">Open chrome://extensions/shortcuts</button>
+      <button id="btnOpenManager" class="ghost">chrome://extensions</button>
+    </div>
+  </div>
+  <h2>This extension's shortcuts</h2>
+  <p class="hint">Change them in Chrome's editor (button above). Slot assignments for quick-launch are below.</p>
+  <div id="cmdList" class="cmds"></div>
+  <h2>Quick-launch slots</h2>
+  <p class="hint">Bind slots 1–2 (Alt+Shift+1/2 by default) to launch an app/extension instantly. Slot 3 has no default key — assign one in Chrome's editor above.</p>
+  <div id="slots" class="slots"></div>
+</section>
+
+<!-- TAB: custom key combos (content-script engine) -->
+<section id="tab-custom" class="panel" hidden>
+  <div class="note">
+    <b>Custom in-page shortcuts</b> work on normal web pages via a content script
+    (e.g. <code>Alt+Shift+X</code> → toggle an extension). They can't override
+    reserved browser keys. Click <b>Record</b>, press your combo, pick an action.
+  </div>
+  <form id="customForm" class="card form">
+    <div class="frow">
+      <label>Keys <input id="combo" readonly placeholder="Record…" required /></label>
+      <button type="button" id="btnRecord" class="ghost">● Record</button>
+    </div>
+    <div class="frow">
+      <label>Label <input id="clabel" placeholder="e.g. Toggle ad blocker" maxlength="60" /></label>
+    </div>
+    <div class="frow2">
+      <label>Action
+        <select id="ckind">
+          <option value="toggle">Toggle enable/disable</option>
+          <option value="launch">Launch app</option>
+          <option value="options">Open options page</option>
+          <option value="open-url">Open URL</option>
+        </select>
+      </label>
+      <label id="targetWrap">Target <select id="ctarget"></select></label>
+    </div>
+    <div class="frow" id="urlWrap" hidden>
+      <label>URL <input id="curl" placeholder="https://…" /></label>
+    </div>
+    <p id="conflict" class="warn" hidden></p>
+    <button class="primary" type="submit">Save shortcut</button>
+  </form>
+  <div id="customList" class="cmds"></div>
+</section>
+
+<footer class="foot">
+  <span id="status" class="status"></span>
+  <span class="spacer"></span>
+  <span class="ver">v1.0 · MV3</span>
+</footer>
+
+<script src="popup.js"></script>
+</body>
+</html>

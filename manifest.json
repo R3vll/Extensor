@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "Extensor — Extension & Shortcut Manager",
+  "version": "1.0.0",
+  "description": "Manage all extensions (enable, disable, uninstall, launch) and manage keyboard shortcuts from one popup.",
+  "minimum_chrome_version": "116",
+  "action": {
+    "default_title": "Extensor — Extension & Shortcut Manager",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["management", "storage", "tabs", "favicon", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-shortcuts.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E",
+        "mac": "Command+Shift+E"
+      },
+      "description": "Open Extensor manager"
+    },
+    "toggle-last": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U"
+      },
+      "description": "Toggle last-toggled extension"
+    },
+    "launch-quick-1": {
+      "suggested_key": {
+        "default": "Alt+Shift+1"
+      },
+      "description": "Custom quick-launch slot 1 (assign in manager)"
+    },
+    "launch-quick-2": {
+      "suggested_key": {
+        "default": "Alt+Shift+2"
+      },
+      "description": "Custom quick-launch slot 2 (assign in manager)"
+    },
+    "launch-quick-3": {
+      "description": "Custom quick-launch slot 3 (assign key in chrome://extensions/shortcuts)"
+    }
+  },
+  "options_page": "popup.html?fullpage=1",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
